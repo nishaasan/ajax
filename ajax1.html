@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fetch Single Post with jQuery AJAX</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-top: 20px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 20px auto;
+      padding: 15px;
+      max-width: 400px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    input {
+      width: 90%;
+      margin: 10px 0;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #responseMessage {
+      max-width: 400px;
+      margin: 20px auto;
+      padding: 15px;
+      background: #e9f5e9;
+      color: #2e7d32;
+      font-size: 16px;
+      border: 1px solid #c8e6c9;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    #responseMessage.error {
+      background: #fce4ec;
+      color: #c62828;
+      border-color: #f8bbd0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Fetch a Post by ID</h1>
+
+  <!-- Input to specify Post ID -->
+  <form onsubmit="fetchPostById(event)">
+    <input id="postId" type="number" placeholder="Enter Post ID (e.g., 1)" required/>
+    <button type="submit">Fetch Post</button>
+  </form>
+
+  <div id="responseMessage" style="display: none;"></div>
+
+  <script>
+    // Fetch a specific post by ID
+    function fetchPostById(event) {
+      event.preventDefault(); // Prevent page reload
+      const postId = $('#postId').val(); // Get post ID from input
+      $.ajax({
+        url: `https://jsonplaceholder.typicode.com/posts/${postId}`, // Fetch a specific post
+        type: 'GET',
+        success: function(response) {
+          $('#responseMessage')
+            .removeClass('error')
+            .html(`<h3>Post ID: ${response.id}</h3><p><strong>Title:</strong> ${response.title}</p><p><strong>Body:</strong> ${response.body}</p>`)
+            .show();
+        },
+        error: function(xhr, status, error) {
+          $('#responseMessage')
+            .addClass('error')
+            .text('Error: Unable to fetch the post. Please try again.')
+            .show();
+        }
+      });
+    }
+  </script>
+</body>
+</html>
